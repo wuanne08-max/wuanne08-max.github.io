@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyễn Minh Quân</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:#4da3ff;
+  --bg:#f2f7ff;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(#eaf3ff,#f6fbff);
+  color:var(--text);
+}
+
+.wrapper{
+  max-width:420px;
+  margin:0 auto;
+  background:#fff;
+  min-height:100vh;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:40px 20px 20px;
+}
+
+.avatar{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.header h1{
+  margin:16px 0 6px;
+  font-size:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.verify{
+  width:20px;
+  height:20px;
+}
+
+.intro{
+  font-size:15px;
+  color:var(--blue);
+  min-height:22px;
+  font-weight:500;
+}
+
+/* SOCIAL */
+.socials{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:22px 0;
+}
+
+.social{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:#1877F2;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  text-decoration:none;
+}
+
+/* SECTION */
+.section{
+  padding:20px;
+}
+
+.section h2{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+/* SKILLS */
+.skill{
+  margin-bottom:14px;
+}
+
+.skill label{
+  font-size:14px;
+}
+
+.bar{
+  height:12px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:6px;
+}
+
+.fill{
+  height:100%;
+  border-radius:999px;
+}
+
+.html{width:100%;background:#22c55e}
+.lua{width:0%;background:#3b82f6}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:20px;
+}
+.lover-card{
+  background:#f9fbff;
+  border-radius:18px;
+  padding:16px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.lover-avatar{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.lover-info{
+  flex:1;
+}
+
+.lover-name{
+  font-weight:600;
+  font-size:16px;
+}
+
+.lover-desc{
+  font-size:13px;
+  color:#6b7280;
+  margin:4px 0 8px;
+}
+
+.lover-link{
+  font-size:13px;
+  color:#ec4899;
+  text-decoration:none;
+  font-weight:500;
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img class="avatar" src="https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/600096447_122270308988025523_189002119631940081_n.jpg?_nc_cat=102&_nc_cb=99be929b-ad57045b&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=mTVj0avw-S8Q7kNvwEMzD2j&_nc_oc=AdnGdWHKjZtYc2MJBv7YsTHBjIDtkrLOYrMLZG3tTGPVZE9pC2xRLzrP0GmYMGFFkXLfZ56HdUNLJSN7Cs0yaN-J&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=oGsB-e9TpOZbX1syEVmvqg&oh=00_AfmBb2peazpP5doYZEvKvzj3BKxITwq7mAs1OjpAbyrqQw&oe=69486AD8h">
+
+    <h1>
+      Nguyễn Minh Quân
+      <svg class="verify" viewBox="0 0 24 24">
+        <path fill="#1D9BF0" d="M22.5 12c0-1.43-1.12-2.62-1.28-4.01-.16-1.41.61-2.86-.03-4.07-.65-1.23-2.17-1.62-3.09-2.54-.92-.92-1.31-2.44-2.54-3.09-1.21-.64-2.66.13-4.07-.03C10.12 1.12 8.93 0 7.5 0S4.88 1.12 3.49 1.28c-1.41.16-2.86-.61-4.07.03-1.23.65-1.62 2.17-2.54 3.09C-.04 5.32-1.56 5.71-2.21 6.94c-.64 1.21.13 2.66-.03 4.07C-2.38 12.38-3.5 13.57-3.5 15s1.12 2.62 1.28 4.01c.16 1.41-.61 2.86.03 4.07.65 1.23 2.17 1.62 3.09 2.54.92.92 1.31 2.44 2.54 3.09 1.21.64 2.66-.13 4.07.03C8.88 28.88 10.07 30 11.5 30s2.62-1.12 4.01-1.28c1.41-.16 2.86.61 4.07-.03 1.23-.65 1.62-2.17 2.54-3.09.92-.92 2.44-1.31 3.09-2.54.64-1.21-.13-2.66.03-4.07.16-1.39 1.28-2.58 1.28-4.01z"/>
+        <path fill="#fff" d="M10.3 15.3l-2.6-2.6-1.4 1.4 4 4 7-7-1.4-1.4z"/>
+      </svg>
+    </h1>
+
+    <div class="intro">
+      <span id="typing"></span>
+    </div>
+
+    <div class="socials">
+      <a class="social" href="https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/600096447_122270308988025523_189002119631940081_n.jpg?_nc_cat=102&_nc_cb=99be929b-ad57045b&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=mTVj0avw-S8Q7kNvwEMzD2j&_nc_oc=AdnGdWHKjZtYc2MJBv7YsTHBjIDtkrLOYrMLZG3tTGPVZE9pC2xRLzrP0GmYMGFFkXLfZ56HdUNLJSN7Cs0yaN-J&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=oGsB-e9TpOZbX1syEVmvqg&oh=00_AfmBb2peazpP5doYZEvKvzj3BKxITwq7mAs1OjpAbyrqQw&oe=69486AD8" target="_blank">f</a>
+    </div>
+  </div>
+
+  
+  <div class="section">
+  <h2>Người yêu của tôi </h2>
+
+  <div class="lover-card">
+   
+      <div class="lover-name">Hoài Ann </div>
+      <div class="lover-desc">
+        
+      </div>
+      <a class="lover-link" 
+         href="https://www.facebook.com/profile.php?id=61583530487475" 
+         target="_blank">
+        Facebook 
+      </a>
+    </div>
+  </div>
+</div>
+<!-- SKILLS -->
+  <div class="section">
+    <h2>Giới thiệu</h2>
+
+    <div class="skill">
+      <label>iuuu hoài ann</label>
+      <div class="bar"><div class="fill html"></div></div>
+    </div>
+
+    <div class="skill">
+      <label>iu người khác nữa</label>
+      <div class="bar"><div class="fill lua"></div></div>
+    </div>
+  </div>
+  <div class="section">
+  <h2>Thông tin liên hệ 📬</h2>
+
+  <div class="contact-card">
+    <div class="contact-item">
+      <span class="label"> Tên:</span>
+      <span class="value">Nguyễn Minh Quân</span>
+    </div>
+
+    
+
+    <div class="contact-item">
+      <span class="label">SĐT:0867722287</span>
+      <a class="value link"
+         href="https://m.me/nguyen.quan.511205"
+         target="_blank">
+        
+      </a>
+    </div>
+
+    <!-- Nếu muốn thêm, bỏ comment dưới -->
+    <!--
+
+
+
+  <div class="footer">© Nguyễn Minh Quân</div>
+
+</div>
+
+<script>
+const texts = [
+  "My names Quân",
+  "Iam Developer ",
+  " iOS ",
+  "Đang yêu Hoài Ann ",
+  
+];
+
+let i=0,j=0,del=false;
+const el=document.getElementById("typing");
+
+function run(){
+  const t=texts[i];
+  el.textContent = del ? t.slice(0,--j) : t.slice(0,++j);
+
+  if(!del && j===t.length) setTimeout(()=>del=true,1200);
+  if(del && j===0){ del=false; i=(i+1)%texts.length }
+
+  setTimeout(run, del?50:80);
+}
+run();
+</script>
+
+</body>
+</html>
