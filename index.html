@@ -2,196 +2,222 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Snake Game Advanced</title>
+<title>quann dtraiii</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-    margin: 0;
-    height: 100vh;
-    background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    color: white;
+body{
+    margin:0;
+    height:100vh;
+    background: radial-gradient(circle at top,#020024,#090979,#000);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial,sans-serif;
+    color:#fff;
 }
-
-.game-box {
-    text-align: center;
+.container{position:relative;text-align:center}
+canvas{
+    background:#050510;
+    border-radius:18px;
+    box-shadow:0 0 25px #00ffe0;
 }
-
-canvas {
-    background: #111;
-    border: 4px solid #00ffcc;
-    border-radius: 10px;
+button{
+    background:#00ffe0;
+    border:none;
+    padding:8px 18px;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
 }
-
-.info {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    width: 400px;
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:5;
 }
-
-button {
-    background: #00ffcc;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
+.big-text{
+    font-size:48px;
+    color:#ff4d4d;
+    text-shadow:0 0 20px red;
+    animation:shake .4s infinite;
 }
-
-button:hover {
-    background: #00cca3;
+.count{
+    font-size:64px;
+    text-shadow:0 0 20px #00ffe0;
+    animation:pulse .8s infinite;
+}
+@keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.2)}
+    100%{transform:scale(1)}
+}
+@keyframes shake{
+    0%{transform:translateX(0)}
+    25%{transform:translateX(-5px)}
+    50%{transform:translateX(5px)}
+    75%{transform:translateX(-5px)}
+    100%{transform:translateX(0)}
+}
+.info{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-top:6px
 }
 </style>
 </head>
+
 <body>
+<div class="container">
+<h2>quann dtraii</h2>
+<canvas id="game" width="360" height="360"></canvas>
 
-<div class="game-box">
-    <h2>🐍 SNAKE GAME ADVANCED</h2>
-    <canvas id="game" width="400" height="400"></canvas>
+<div class="info">
+<div>Score: <span id="score">0</span></div>
+<div>High: <span id="high">0</span></div>
+</div>
 
-    <div class="info">
-        <div>Score: <span id="score">0</span></div>
-        <div>Speed: <span id="speed">5</span></div>
-        <button onclick="resetGame()">Restart</button>
-    </div>
+<!-- START -->
+<div class="overlay" id="startScreen">
+<button onclick="startCountdown()">▶ BẮT ĐẦU</button>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="overlay" id="countdown" style="display:none">
+<div class="count" id="countText">3</div>
+</div>
+
+<!-- DEATH -->
+<div class="overlay" id="deathScreen" style="display:none">
+<div class="big-text"> ĂN CỨT RỒI CON CHÓ ƠI</div>
+</div>
 </div>
 
 <script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-const box = 20;
-let score = 0;
-let speed = 5;
-let game;
-
-let snake;
-let food;
-let goldenFood;
-let direction;
-let obstacles = [];
-
-function init() {
-    snake = [{ x: 9 * box, y: 9 * box }];
-    direction = "RIGHT";
-    score = 0;
-    speed = 5;
-
-    food = randomPosition();
-    goldenFood = null;
-    obstacles = generateObstacles();
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("speed").innerText = speed;
-
-    clearInterval(game);
-    game = setInterval(draw, 150);
-}
-
-function randomPosition() {
-    return {
-        x: Math.floor(Math.random() * 19) * box,
-        y: Math.floor(Math.random() * 19) * box
-    };
-}
-
-function generateObstacles() {
-    let obs = [];
-    for (let i = 0; i < 5; i++) {
-        obs.push(randomPosition());
+    function vibrate(pattern){
+    if(navigator.vibrate){
+        navigator.vibrate(pattern);
     }
-    return obs;
 }
 
-document.addEventListener("keydown", e => {
-    if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-    if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
-    if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-    if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const box=20;
+
+let snake,food,dir;
+let score=0,speed=140;
+let game=null,running=false;
+
+let high=localStorage.getItem("snake_high")||0;
+document.getElementById("high").innerText=high;
+
+const eat=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.wav");
+const dead=new Audio("https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.wav");
+
+function rand(){
+    return {x:Math.floor(Math.random()*18)*box,
+            y:Math.floor(Math.random()*18)*box};
+}
+
+function reset(){
+    snake=[{x:9*box,y:9*box}];
+    food=rand();
+    dir="RIGHT";
+    score=0;
+}
+
+function startCountdown(){
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("countdown").style.display="flex";
+    let c=3;
+    document.getElementById("countText").innerText=c;
+    const t=setInterval(()=>{
+        c--;
+        document.getElementById("countText").innerText=c;
+        if(c===0){
+            clearInterval(t);
+            document.getElementById("countdown").style.display="none";
+            startGame();
+        }
+    },1000);
+}
+
+function startGame(){
+    reset();
+    running=true;
+    clearInterval(game);
+    game=setInterval(draw,speed);
+}
+
+document.addEventListener("keydown",e=>{
+    if(!running) return;
+    if(e.key==="ArrowUp"&&dir!=="DOWN")dir="UP";
+    if(e.key==="ArrowDown"&&dir!=="UP")dir="DOWN";
+    if(e.key==="ArrowLeft"&&dir!=="RIGHT")dir="LEFT";
+    if(e.key==="ArrowRight"&&dir!=="LEFT")dir="RIGHT";
 });
 
-function collision(head, array) {
-    return array.some(part => part.x === head.x && part.y === head.y);
-}
+function draw(){
+    ctx.clearRect(0,0,360,360);
 
-function draw() {
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle="red";
+    ctx.fillRect(food.x,food.y,box,box);
 
-    // Draw snake
-    snake.forEach((part, index) => {
-        ctx.fillStyle = index === 0 ? "#00ffcc" : "#00bfa6";
-        ctx.fillRect(part.x, part.y, box, box);
+    snake.forEach((p,i)=>{
+        ctx.fillStyle=i==0?"#00ffe0":"#00bfa6";
+        ctx.fillRect(p.x,p.y,box,box);
     });
 
-    // Draw food
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, box, box);
+    let h={...snake[0]};
+    if(dir=="UP")h.y-=box;
+    if(dir=="DOWN")h.y+=box;
+    if(dir=="LEFT")h.x-=box;
+    if(dir=="RIGHT")h.x+=box;
 
-    // Golden food
-    if (goldenFood) {
-        ctx.fillStyle = "gold";
-        ctx.fillRect(goldenFood.x, goldenFood.y, box, box);
+    if(h.x<0||h.y<0||h.x>=360||h.y>=360||
+       snake.some((p,i)=>i>0&&p.x==h.x&&p.y==h.y)){
+        return gameOver();
     }
 
-    // Obstacles
-    ctx.fillStyle = "#555";
-    obstacles.forEach(o => ctx.fillRect(o.x, o.y, box, box));
-
-    let head = { ...snake[0] };
-
-    if (direction === "UP") head.y -= box;
-    if (direction === "DOWN") head.y += box;
-    if (direction === "LEFT") head.x -= box;
-    if (direction === "RIGHT") head.x += box;
-
-    // Game over
-    if (
-        head.x < 0 || head.y < 0 ||
-        head.x >= canvas.width || head.y >= canvas.height ||
-        collision(head, snake) ||
-        collision(head, obstacles)
-    ) {
-        clearInterval(game);
-        alert("💀 Game Over!\nScore: " + score);
-        return;
-    }
-
-    // Eat food
-    if (head.x === food.x && head.y === food.y) {
-        score++;
-        food = randomPosition();
-
-        if (score % 5 === 0) goldenFood = randomPosition();
-        if (score % 4 === 0 && speed < 15) {
-            speed++;
-            clearInterval(game);
-            game = setInterval(draw, 150 - speed * 5);
-        }
-    } else if (goldenFood && head.x === goldenFood.x && head.y === goldenFood.y) {
-        score += 5;
-        goldenFood = null;
-        snake.push({});
-        snake.push({});
-    } else {
+    if(h.x==food.x&&h.y==food.y){
+    score++;
+    eat.play();
+    vibrate(50); // 📳 rung nhẹ
+    food=rand();
+}
+else{
         snake.pop();
     }
 
-    snake.unshift(head);
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("speed").innerText = speed;
+    snake.unshift(h);
+    document.getElementById("score").innerText=score;
 }
 
-function resetGame() {
-    init();
-}
+function gameOver(){
+    clearInterval(game);
+    running=false;
+    dead.play();
+    vibrate([200,100,200,100,400]); // 📳 rung mạnh liên tục
 
-init();
+
+    if(score>high){
+        high=score;
+        localStorage.setItem("snake_high",high);
+        document.getElementById("high").innerText=high;
+    }
+
+    document.getElementById("deathScreen").style.display="flex";
+
+    // ⏳ đợi 3 giây → đếm ngược → chơi lại
+    setTimeout(()=>{
+        document.getElementById("deathScreen").style.display="none";
+        startCountdown();
+    },3000);
+}
 </script>
-
 </body>
 </html>
